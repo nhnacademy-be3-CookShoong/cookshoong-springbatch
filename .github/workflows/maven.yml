@@ -39,11 +39,11 @@ jobs:
 
       # 이미지 생성
       - name: Build Docker Image
-        run: docker build -t unhas/api-1 .
+        run: docker build -t jeongjewan/cookshoong-batch .
 
       # 도커 허브 푸시
       - name: Docker Image Push
-        run: docker push unhas/api-1
+        run: docker push jeongjewan/cookshoong-batch
 
       # 쉘 스크립트 실행
       - name: execute shell script
