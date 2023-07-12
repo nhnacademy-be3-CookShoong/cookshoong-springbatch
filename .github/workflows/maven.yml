@@ -48,7 +48,7 @@ jobs:
         run: docker push jeongjewan/cookshoong-batch
 
       #첫번째 Batch서버 배포
-      - name: shell Stop Second Batch Health Check
+      - name: shell Stop First Batch Health Check
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_IP }}
@@ -59,7 +59,7 @@ jobs:
           script: "./stop.sh"
 
       # 쉘 스크립트 실행
-      - name: execute shell script
+      - name: execute shell script first
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_IP }}
@@ -78,9 +78,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
-          script: "./stop.sh"
+          script: "./stop8254.sh"
 
-      - name: execute shell script
+      - name: execute shell script second
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_IP_2 }}
@@ -88,4 +88,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
-          script: "./startup.sh"
+          script: "./startup8254.sh"
