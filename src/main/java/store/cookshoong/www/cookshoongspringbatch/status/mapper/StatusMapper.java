@@ -19,7 +19,7 @@ public interface StatusMapper {
      *
      * @return the accounts
      */
-    @Select("select a.account_id, a.last_login_at, a.status_code from accounts as a")
+    @Select("select a.account_id, a.last_login_at, a.status_code from accounts as a where a.last_login_at <= #{_conversionBasedDate} and a.status_code = 'ACTIVE'")
     List<AccountStatusDto> getAccounts();
 
     @Update("update accounts as a set a.status_code = 'DORMANCY' where a.account_id= #{_accountStatusDto.accountId}")
