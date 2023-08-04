@@ -1,23 +1,19 @@
-package store.cookshoong.www.cookshoongspringbatch.status;
+package store.cookshoong.www.cookshoongspringbatch.status.dto;
 
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * {설명을 작성해주세요}.
+ * 회원 정보를 담는 dto.
  *
  * @author seungyeon
  * @since 2023.07.30
  */
 @Getter
-@NoArgsConstructor
 public class AccountStatusDto {
     private Long accountId;
     private LocalDateTime lastLoginAt;
     @Setter
     private String statusCode;
 }
-
