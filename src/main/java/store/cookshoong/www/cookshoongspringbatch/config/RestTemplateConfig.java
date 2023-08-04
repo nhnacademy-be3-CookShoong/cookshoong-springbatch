@@ -28,7 +28,7 @@ import store.cookshoong.www.cookshoongspringbatch.common.property.SecureKeyManag
 /**
  * API 호출을 위한 기본 RestTemplate 빈 등록하기 위한 Configuration Class.
  *
- * @author koesnam
+ * @author koesnam (추만석)
  * @since 2023.07.10
  */
 @Configuration

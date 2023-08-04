@@ -1,6 +1,6 @@
 package store.cookshoong.www.cookshoongspringbatch.status.job;
 
-import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {설명을 작성해주세요}.
+ * 회원 상태 변경을 위한 job.
  *
  * @author seungyeon
  * @since 2023.07.30
@@ -16,21 +16,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class StatusJobConfig {
+
     private final JobBuilderFactory jobBuilderFactory;
     private final StatusStepConfig statusStepConfig;
 
     /**
-     * Change status job job.
+     * 회원 상태 변경을 위한 job.
      *
      * @return the job
      */
     @Bean
-    public Job changeStatusJob() {
-        return jobBuilderFactory.get("changeStatus_" + LocalDateTime.now())
-            .preventRestart()
+    public Job changedStatusJob() {
+        return jobBuilderFactory.get("changeStatusJob_" + UUID.randomUUID())
             .start(statusStepConfig.changeStatusJobStep())
             .build();
     }
-
-
 }

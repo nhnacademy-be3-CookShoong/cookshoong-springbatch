@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="store.cookshoong.www.cookshoongspringbatch.status.mapper.StatusMapper">
+    <select id="getAccounts"
+            resultType="store.cookshoong.www.cookshoongspringbatch.status.dto.AccountStatusDto"
+            parameterType="hashmap">
+        select a.account_id as 'accountId', a.last_login_at as 'lastLoginAt', a.status_code as 'statusCode'
+        from accounts as a
+        where a.status_code = 'ACTIVE'
+          and a.last_login_at <![CDATA[<=]]> #{conversionBasedDate}
+        LIMIT #{_skiprows}, #{_pagesize}
+    </select>
+
+    <update id="updateAccounts" parameterType="store.cookshoong.www.cookshoongspringbatch.status.dto.AccountStatusDto">
+        update accounts set status_code = 'DORMANCY'
+        where accounts.account_id =#{accountId}
+    </update>
+</mapper>

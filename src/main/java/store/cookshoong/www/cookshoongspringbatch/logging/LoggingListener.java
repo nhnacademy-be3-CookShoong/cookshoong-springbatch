@@ -7,22 +7,21 @@ import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.stereotype.Component;
 
 /**
- * {설명을 작성해주세요}.
+ * Step 전후로 확인하는 listener.
  *
  * @author seungyeon
- * @since 2023.07.31
+ * @since 2023.08.03
  */
 @Slf4j
 @Component
 public class LoggingListener {
-
     /**
      * Step 실행전 확인
      *
      * @param execution the execution
      */
     @BeforeStep
-    public void beforeStep(StepExecution execution) {
+    public void beforeStep(StepExecution execution){
         log.info("start : {}", execution.getStepName());
     }
 

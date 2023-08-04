@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="store.cookshoong.www.cookshoongspringbatch.rank.mapper.RankMapper">
+    <select id="selectOrderCntByAccount" resultType="store.cookshoong.www.cookshoongspringbatch.rank.dto.SelectAccountOrderDto"
+            parameterType="hashmap">
+        select o.account_id as 'accountId',
+               count(o.ordered_at) as 'orderCnt'
+            from orders as o
+            where o.order_status_code = #{statusCode}
+              and #{startDate} <![CDATA[<=]]> o.ordered_at <![CDATA[<=]]> #{endDate}
+        group by o.account_id
+            LIMIT #{_skiprows}, #{_pagesize}
+    </select>
+    <select id="selectRankCodes" resultType="store.cookshoong.www.cookshoongspringbatch.rank.dto.RankDto">
+        select r.rank_code as 'rankCode'
+            from ranks as r order by r.rank_code asc LIMIT #{_skiprows}, #{_pagesize}
+    </select>
+    <update id="updateRank" parameterType="store.cookshoong.www.cookshoongspringbatch.rank.dto.UpdateAccountRankDto">
+        update accounts
+        set rank_code = #{rankCode} where accounts.account_id = #{accountId}
+    </update>
+</mapper>

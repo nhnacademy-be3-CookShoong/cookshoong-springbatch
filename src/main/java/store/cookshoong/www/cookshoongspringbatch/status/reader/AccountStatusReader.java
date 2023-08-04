@@ -11,10 +11,10 @@ import org.mybatis.spring.batch.builder.MyBatisPagingItemReaderBuilder;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import store.cookshoong.www.cookshoongspringbatch.status.AccountStatusDto;
+import store.cookshoong.www.cookshoongspringbatch.status.dto.AccountStatusDto;
 
 /**
- * {설명을 작성해주세요}.
+ * 사용자 상태 변경을 위한 Reader.
  *
  * @author seungyeon
  * @since 2023.07.31
@@ -27,7 +27,7 @@ public class AccountStatusReader {
     private final SqlSessionFactory sqlSessionFactory;
 
     /**
-     * Accounts reader my batis paging item reader.
+     * 로그인한 마지막 날짜가 90일 이전, 현재 상태가 ACTIVE인 회원을 페이징 단위로 읽어옴.
      *
      * @return the my batis paging item reader
      */
@@ -38,7 +38,7 @@ public class AccountStatusReader {
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("conversionBasedDate", conversionBasedDate);
-        log.warn("===========reader Start!=========");
+        log.warn("===========Stauts Step reader Start!=========");
         return new MyBatisPagingItemReaderBuilder<AccountStatusDto>()
             .sqlSessionFactory(sqlSessionFactory)
             .queryId("store.cookshoong.www.cookshoongspringbatch.status.mapper.StatusMapper.getAccounts")
