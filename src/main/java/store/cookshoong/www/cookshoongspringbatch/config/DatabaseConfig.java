@@ -27,7 +27,6 @@ public class DatabaseConfig {
      * @return the data source
      */
     @Bean
-    @Profile("!default")
     public DataSource dataSourceBack(DatabaseProperties databaseProperties) {
         return DataSourceBuilder.create()
             .driverClassName(databaseProperties.getDriverClassName())
@@ -47,7 +46,6 @@ public class DatabaseConfig {
      * @throws JsonProcessingException the json processing exception
      */
     @Bean
-    @Profile("!default")
     public DatabaseProperties backDatabaseProperties(@Value("${cookshoong.skm.keyid.mysql}") String mysqlKeyid,
                                                      SKMService skmService) throws JsonProcessingException {
         return skmService.fetchSecrets(mysqlKeyid, DatabaseProperties.class);
