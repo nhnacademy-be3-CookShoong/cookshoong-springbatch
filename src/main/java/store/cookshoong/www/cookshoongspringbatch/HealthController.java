@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023.07.11
  */
 @RestController
-@Profile("prod | prod2")
+//@Profile("prod | prod2")
 @RequiredArgsConstructor
 public class HealthController {
     private final ApplicationInfoManager applicationInfoManager;
