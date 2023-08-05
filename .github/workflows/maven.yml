@@ -57,7 +57,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_IP }}
-          username: ${secrets.SSH_ID }
+          username: ${{ secrets.SSH_ID }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
@@ -78,7 +78,7 @@ jobs:
       - name: shell Stop Second Batch Health Check
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SSH_IP_2 }}
+          host: ${{ secrets.SSH_IP }}
           username: ${{ secrets.SSH_ID }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
@@ -88,7 +88,7 @@ jobs:
       - name: execute shell script second
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SSH_IP_2 }}
+          host: ${{ secrets.SSH_IP }}
           username: ${{ secrets.SSH_ID }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
