@@ -1,5 +1,7 @@
 package store.cookshoong.www.cookshoongspringbatch.status.job;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -27,7 +29,7 @@ public class StatusJobConfig {
      */
     @Bean
     public Job changedStatusJob() {
-        return jobBuilderFactory.get("changeStatusJob_" + UUID.randomUUID())
+        return jobBuilderFactory.get("changeStatusJob_" + LocalDate.now())
             .start(statusStepConfig.changeStatusJobStep())
             .build();
     }

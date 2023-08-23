@@ -30,7 +30,7 @@ public class AccountStatusWriter {
     @Bean
     @StepScope
     public MyBatisBatchItemWriter<AccountStatusDto> changeAccounts() {
-        log.warn("===========Change Accounts Status Start!=========");
+        log.info("===========Change Accounts Status Start!=========");
         return new MyBatisBatchItemWriterBuilder<AccountStatusDto>()
             .sqlSessionFactory(sqlSessionFactory)
             .statementId("store.cookshoong.www.cookshoongspringbatch.status.mapper.StatusMapper.updateAccounts")

@@ -1,7 +1,6 @@
 package store.cookshoong.www.cookshoongspringbatch.config;
 
 import javax.sql.DataSource;
-import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -18,7 +17,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
  */
 @Configuration
 @MapperScan(basePackages = "**.mapper.**", sqlSessionFactoryRef = "sqlSessionFactory")
-public class BackMybatisConfig extends DefaultBatchConfigurer {
+public class MybatisConfig extends DefaultBatchConfigurer {
 
     /**
      * SqlSessionFactory 객체를 생성하여 DataSource 의존성 주입 해준다.
