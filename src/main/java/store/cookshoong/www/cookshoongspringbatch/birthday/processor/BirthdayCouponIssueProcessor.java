@@ -13,7 +13,6 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
-import store.cookshoong.www.cookshoongspringbatch.DataShareBean;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInfoDto;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.SelectAccountDto;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.InsertIssueCouponDto;
@@ -31,16 +30,16 @@ import store.cookshoong.www.cookshoongspringbatch.rank.dto.RankDto;
 public class BirthdayCouponIssueProcessor implements ItemProcessor<SelectAccountDto, InsertIssueCouponDto> {
     private BirthdayCouponInfoDto birthdayCoupon;
     private static Logger logger = LoggerFactory.getLogger(BirthdayCouponIssueProcessor.class);
-    private DataShareBean<BirthdayCouponInfoDto> dataShareBean;
+//    private DataShareBean<BirthdayCouponInfoDto> dataShareBean;
 
-    /**
-     * Instantiates a new Birthday coupon issue processor.
-     *
-     * @param dataShareBean the data share bean
-     */
-    public BirthdayCouponIssueProcessor(DataShareBean<BirthdayCouponInfoDto> dataShareBean) {
-        this.dataShareBean = dataShareBean;
-    }
+//    /**
+//     * Instantiates a new Birthday coupon issue processor.
+//     *
+//     * @param dataShareBean the data share bean
+//     */
+//    public BirthdayCouponIssueProcessor(DataShareBean<BirthdayCouponInfoDto> dataShareBean) {
+//        this.dataShareBean = dataShareBean;
+//    }
 
     @Override
     public InsertIssueCouponDto process(SelectAccountDto selectAccountDto) throws Exception {

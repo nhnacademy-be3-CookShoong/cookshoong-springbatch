@@ -11,7 +11,6 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.context.annotation.Configuration;
-import store.cookshoong.www.cookshoongspringbatch.DataShareBean;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInfoDto;
 
 /**
