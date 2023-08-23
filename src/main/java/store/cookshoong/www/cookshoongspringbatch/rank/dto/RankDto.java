@@ -1,5 +1,6 @@
 package store.cookshoong.www.cookshoongspringbatch.rank.dto;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 
 /**
@@ -9,6 +10,9 @@ import lombok.Getter;
  * @since 2023.08.03
  */
 @Getter
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class RankDto {
     private String rankCode;
+    private Long couponPolicyId;
+    private Integer usagePeriod;
 }

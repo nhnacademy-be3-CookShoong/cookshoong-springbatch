@@ -12,7 +12,7 @@ import store.cookshoong.www.cookshoongspringbatch.rank.dto.SelectAccountOrderDto
 import store.cookshoong.www.cookshoongspringbatch.rank.dto.UpdateAccountRankDto;
 import store.cookshoong.www.cookshoongspringbatch.rank.processor.AccountRankProcessor;
 import store.cookshoong.www.cookshoongspringbatch.rank.reader.AccountRankReader;
-import store.cookshoong.www.cookshoongspringbatch.rank.writer.AccountRankWriter;
+import store.cookshoong.www.cookshoongspringbatch.rank.writer.CompositeRankWriter;
 
 /**
  * 회원 등급 갱신하는 Step.
@@ -27,7 +27,7 @@ public class AccountRankStepConfig {
     private static final Integer CHUNK_SIZE = 10;
     private final StepBuilderFactory stepBuilderFactory;
     private final AccountRankReader rankReader;
-    private final AccountRankWriter rankWriter;
+    private final CompositeRankWriter rankWriter;
     private final AccountRankProcessor rankProcessor;
     private final LoggingListener loggingListener;
 
@@ -40,10 +40,11 @@ public class AccountRankStepConfig {
     @Bean
     public Step changeRankStep() {
         return stepBuilderFactory.get("등급 재산정")
+            .allowStartIfComplete(true)
             .<SelectAccountOrderDto, UpdateAccountRankDto>chunk(CHUNK_SIZE)
             .reader(rankReader.accountRankRead())
             .processor(rankProcessor)
-            .writer(rankWriter.updateAccountRank())
+            .writer(rankWriter.compositeRankAndCouponWriter())
             .listener(loggingListener)
             .build();
 
