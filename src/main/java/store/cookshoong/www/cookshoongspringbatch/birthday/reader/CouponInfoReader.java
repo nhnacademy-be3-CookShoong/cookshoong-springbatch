@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.batch.MyBatisCursorItemReader;
 import org.mybatis.spring.batch.builder.MyBatisCursorItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInfoDto;
@@ -21,7 +22,8 @@ import store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInf
 @Configuration
 @RequiredArgsConstructor
 public class CouponInfoReader {
-    private static final Long BIRTHDAY_COUPON_CODE = 32L;
+    @Value("${cookshoong.birthday.coupon.id}")
+    private Long birthdayCouponCode;
 
     private final SqlSessionFactory sqlSessionFactory;
 
@@ -34,7 +36,7 @@ public class CouponInfoReader {
     public MyBatisCursorItemReader<BirthdayCouponInfoDto> getBirthCouponInfo() {
         log.warn("========get Birthday Coupon Info=========");
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("birthCouponCode", BIRTHDAY_COUPON_CODE);
+        parameters.put("birthCouponCode", birthdayCouponCode);
         return new MyBatisCursorItemReaderBuilder<BirthdayCouponInfoDto>()
             .sqlSessionFactory(sqlSessionFactory)
             .queryId("store.cookshoong.www.cookshoongspringbatch.birthday.mapper.BirthdayMapper.selectBirthdayCouponInfo")
