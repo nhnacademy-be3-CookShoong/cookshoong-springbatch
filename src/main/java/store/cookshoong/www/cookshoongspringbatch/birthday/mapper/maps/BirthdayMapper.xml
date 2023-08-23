@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="store.cookshoong.www.cookshoongspringbatch.birthday.mapper.BirthdayMapper">
+    <sql id="generateUuid">
+        SELECT UUID() AS generated_uuid
+    </sql>
+    <select id="selectAccountsByMonth"
+            resultType="store.cookshoong.www.cookshoongspringbatch.birthday.dto.SelectAccountDto"
+            parameterType="hashmap">
+        select a.account_id as 'accountId'
+        from accounts as a
+        where MONTH(birthday) = #{nowMonth}
+        LIMIT #{_skiprows}, #{_pagesize}
+    </select>
+    <select id="selectBirthdayCouponInfo"
+            resultType="store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInfoDto"
+            parameterType="hashmap">
+        select p.coupon_policy_id as 'couponPolicyId',
+               p.usage_period     as 'usagePeriod'
+        from coupon_policy as p
+        where p.coupon_policy_id = #{birthCouponCode}
+    </select>
+    <insert id="insertBirthdayCoupon"
+            parameterType="store.cookshoong.www.cookshoongspringbatch.birthday.dto.InsertIssueCouponDto">
+        insert into issue_coupons (issue_coupon_code, account_id, coupon_policy_id, receipt_date, expiration_date)
+        values (UUID_TO_BIN(UUID()), #{accountId}, #{couponPolicyId}, #{receiptDate}, #{expirationDate})
+    </insert>
+</mapper>

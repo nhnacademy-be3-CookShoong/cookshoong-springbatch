@@ -14,4 +14,5 @@ public interface RankMapper {
     List<RankDto> selectRankCodes();
     List<SelectAccountOrderDto> selectOrderCntByAccount();
     void updateRank();
+    void insertRankCoupon();
 }

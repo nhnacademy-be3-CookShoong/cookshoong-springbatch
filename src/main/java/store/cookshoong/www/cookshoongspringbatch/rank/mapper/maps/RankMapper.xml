@@ -5,20 +5,28 @@
 <mapper namespace="store.cookshoong.www.cookshoongspringbatch.rank.mapper.RankMapper">
     <select id="selectOrderCntByAccount" resultType="store.cookshoong.www.cookshoongspringbatch.rank.dto.SelectAccountOrderDto"
             parameterType="hashmap">
-        select o.account_id as 'accountId',
-               count(o.ordered_at) as 'orderCnt'
-            from orders as o
-            where o.order_status_code = #{statusCode}
-              and #{startDate} <![CDATA[<=]]> o.ordered_at <![CDATA[<=]]> #{endDate}
-        group by o.account_id
+        select a.account_id as 'accountId',
+               SUM(CASE WHEN o.order_status_code IN (#{statusCode1}, #{statusCode2}) THEN 1 ELSE 0 END) as 'orderCnt'
+            from accounts as a left join orders o on a.account_id = o.account_id and o.ordered_at BETWEEN #{startDate} AND #{endDate}
+            where a.status_code != 'WITHDRAWAL'
+        group by a.account_id
             LIMIT #{_skiprows}, #{_pagesize}
     </select>
     <select id="selectRankCodes" resultType="store.cookshoong.www.cookshoongspringbatch.rank.dto.RankDto">
-        select r.rank_code as 'rankCode'
-            from ranks as r order by r.rank_code asc LIMIT #{_skiprows}, #{_pagesize}
+        select r.rank_code as 'rankCode',
+               rhcp.coupon_policy_id as 'couponPolicyId',
+               cp.usage_period as 'usagePeriod'
+            from ranks as r
+            inner join ranks_has_coupon_policy rhcp on r.rank_code = rhcp.rank_code
+            inner join coupon_policy cp on rhcp.coupon_policy_id = cp.coupon_policy_id
+            order by r.rank_code asc LIMIT #{_skiprows}, #{_pagesize}
     </select>
     <update id="updateRank" parameterType="store.cookshoong.www.cookshoongspringbatch.rank.dto.UpdateAccountRankDto">
         update accounts
         set rank_code = #{rankCode} where accounts.account_id = #{accountId}
     </update>
+    <insert id="insertRankCoupon" parameterType="store.cookshoong.www.cookshoongspringbatch.rank.dto.UpdateAccountRankDto">
+        insert into issue_coupons (issue_coupon_code, account_id, coupon_policy_id, receipt_date, expiration_date)
+        VALUES (UUID_TO_BIN(UUID()), #{accountId}, #{couponPolicyId}, #{receiptDate}, #{expirationDate})
+    </insert>
 </mapper>

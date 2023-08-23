@@ -29,9 +29,9 @@ public class AccountRankReader {
 
 
     /**
-     * 전 달을 기준, '주문완료'상태의 주문 건수를 가져옴.
+     * 전 달을 기준, '배달완료'상태의 주문 건수를 가져옴.
      *
-     * @return the my batis paging item reader
+     * @return  my batis paging item reader
      */
     @Bean
     @StepScope
@@ -41,7 +41,8 @@ public class AccountRankReader {
         LocalDate endDate = lastMonth.atEndOfMonth();
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("statusCode", "COMPLETE");
+        parameters.put("statusCode1", "COMPLETE");
+        parameters.put("statusCode2", "PARTIAL");
         parameters.put("startDate", startDate);
         parameters.put("endDate", endDate);
 
@@ -50,8 +51,7 @@ public class AccountRankReader {
             .sqlSessionFactory(sqlSessionFactory)
             .queryId("store.cookshoong.www.cookshoongspringbatch.rank.mapper.RankMapper.selectOrderCntByAccount")
             .parameterValues(parameters)
-            .pageSize(PAGE_SIZE) // chunkSize = pageSize
+            .pageSize(PAGE_SIZE)
             .build();
-
     }
 }

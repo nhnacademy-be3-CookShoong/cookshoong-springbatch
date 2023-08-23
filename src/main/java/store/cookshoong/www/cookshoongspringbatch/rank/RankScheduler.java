@@ -1,4 +1,4 @@
-package store.cookshoong.www.cookshoongspringbatch.status;
+package store.cookshoong.www.cookshoongspringbatch.rank;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,30 +11,34 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import store.cookshoong.www.cookshoongspringbatch.status.job.StatusJobConfig;
+import store.cookshoong.www.cookshoongspringbatch.rank.job.AccountRankJobConfig;
 
 /**
- * 상태 변경 스케줄러.
+ * 등급 변경 및 등급 쿠폰 발급 스케줄러.
  *
  * @author seungyeon
- * @since 2023.08.04
+ * @since 2023.08.23
  */
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class StatusScheduler {
+public class RankScheduler {
     private final JobLauncher jobLauncher;
-
-    private final StatusJobConfig statusJobConfig;
+    private final AccountRankJobConfig accountRankJobConfig;
 
     /**
-     * 매일 새벽 5시에 상태 변경 job 실행.
+     * 매달 4일 오후 11시 55분에 등급 변경 후 쿠폰 발급하는 job 실행.
+     *
+     * @throws JobInstanceAlreadyCompleteException the job instance already complete exception
+     * @throws JobExecutionAlreadyRunningException the job execution already running exception
+     * @throws JobParametersInvalidException       the job parameters invalid exception
+     * @throws JobRestartException                 the job restart exception
      */
-    @Scheduled(cron = "0 0 5 * * *", zone = "Asia/Seoul")
-    public void runStatusChange()
+    @Scheduled(cron = "0 55 23 4 * ?", zone = "Asia/Seoul")
+    public void runAccountRank()
         throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         JobParameters jobParameters = new JobParametersBuilder().toJobParameters();
-        log.info("status scheduler Run! jobParameter : {}", jobParameters);
-        jobLauncher.run(statusJobConfig.changedStatusJob(), jobParameters);
+        log.info("rank scheduler Run! jobParameter : {}", jobParameters);
+        jobLauncher.run(accountRankJobConfig.changedRankJob(), jobParameters);
     }
 }
