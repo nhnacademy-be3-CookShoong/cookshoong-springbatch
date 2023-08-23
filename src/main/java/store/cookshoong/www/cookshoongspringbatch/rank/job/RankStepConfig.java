@@ -36,6 +36,7 @@ public class RankStepConfig {
     @JobScope
     public Step getRankInfoStep() {
         return stepBuilderFactory.get("등급 이름들 가져오기")
+            .allowStartIfComplete(true)
             .<RankDto, RankDto>chunk(CHUNK_SIZE)
             .reader(ranksReader.getRankCodes())
             .writer(ranksWriter)
