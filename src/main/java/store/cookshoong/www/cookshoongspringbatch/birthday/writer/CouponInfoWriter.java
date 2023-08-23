@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInfoDto;
 
 /**
- * 생일 쿠폰에 대한 정보를 가져와서 DatashareBean에 등록.
+ * 생일 쿠폰에 대한 정보를 가져와서 DatashareBean 에 등록.
  * 생일 쿠폰의 정책 아이디와 사용기간을 가져옴.
  *
  * @author seungyeon

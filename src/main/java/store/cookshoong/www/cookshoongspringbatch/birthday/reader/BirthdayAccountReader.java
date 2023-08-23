@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.SelectAccountDto;
 
 /**
- * {설명을 작성해주세요}.
+ * 이번달 생일인 회원 번호 reader.
  *
  * @author seungyeon
  * @since 2023.08.15
@@ -27,7 +27,7 @@ public class BirthdayAccountReader {
     private final SqlSessionFactory sqlSessionFactory;
 
     /**
-     * Birthday account read my batis paging item reader.
+     * 이번 달 생일인 회원 번호 read.
      *
      * @return my batis paging item reader
      */

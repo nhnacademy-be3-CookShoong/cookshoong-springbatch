@@ -19,7 +19,7 @@ import store.cookshoong.www.cookshoongspringbatch.birthday.dto.InsertIssueCoupon
 import store.cookshoong.www.cookshoongspringbatch.rank.dto.RankDto;
 
 /**
- * {설명을 작성해주세요}.
+ * 회원 쿠폰 발급 processor.
  *
  * @author seungyeon
  * @since 2023.08.15

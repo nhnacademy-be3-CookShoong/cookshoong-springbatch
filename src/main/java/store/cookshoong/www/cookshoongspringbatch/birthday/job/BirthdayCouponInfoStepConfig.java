@@ -50,7 +50,7 @@ public class BirthdayCouponInfoStepConfig {
     }
 
     /**
-     * Promotion listener birthday execution context promotion listener.
+     * jobExecutionContext로 승격.
      *
      * @return the execution context promotion listener
      */

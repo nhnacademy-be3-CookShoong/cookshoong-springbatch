@@ -23,7 +23,7 @@ public class BirthdayCouponJobConfig {
     private final BirthdayCouponStepConfig birthdayCouponStepConfig;
 
     /**
-     * 생일 쿠폰에 대한 정책을 들고오고 .
+     * 생일 쿠폰에 대한 정책을 들고와서 쿠폰 발급.
      *
      * @return the job
      */
