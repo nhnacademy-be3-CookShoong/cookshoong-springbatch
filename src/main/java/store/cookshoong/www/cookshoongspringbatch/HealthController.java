@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class HealthController {
     private final ApplicationInfoManager applicationInfoManager;
+
     @PostMapping("health-check/fail")
     public ResponseEntity<Void> stop() {
         applicationInfoManager.setInstanceStatus(InstanceInfo.InstanceStatus.DOWN);
@@ -42,4 +43,5 @@ public class HealthController {
             .getInfo()
             .getStatus());
     }
+
 }
