@@ -1,5 +1,6 @@
 package store.cookshoong.www.cookshoongspringbatch.status.job;
 
+import java.sql.SQLException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.conn.ConnectTimeoutException;
@@ -10,8 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DeadlockLoserDataAccessException;
 import store.cookshoong.www.cookshoongspringbatch.logging.LoggingListener;
+import store.cookshoong.www.cookshoongspringbatch.logging.status.StatusChangeListener;
+import store.cookshoong.www.cookshoongspringbatch.logging.status.StatusChangeSkipListener;
 import store.cookshoong.www.cookshoongspringbatch.status.dto.AccountStatusDto;
-import store.cookshoong.www.cookshoongspringbatch.status.exception.NotFoundAccountException;
 import store.cookshoong.www.cookshoongspringbatch.status.reader.AccountStatusReader;
 import store.cookshoong.www.cookshoongspringbatch.status.writer.AccountStatusWriter;
 
@@ -29,6 +31,8 @@ public class StatusStepConfig {
     private final AccountStatusReader accountStatusReader;
     private final AccountStatusWriter accountStatusWriter;
     private final LoggingListener loggingListener;
+    private final StatusChangeListener statusChangeListener;
+    private final StatusChangeSkipListener statusChangeSkipListener;
 
     private static final Integer CHUNK_SIZE = 10;
 
@@ -42,14 +46,16 @@ public class StatusStepConfig {
     public Step changeStatusJobStep() {
         return stepBuilderFactory.get("휴면될 회원리스트 가져오기")
             .<AccountStatusDto, AccountStatusDto>chunk(CHUNK_SIZE)
-            .reader(accountStatusReader.accountsReader())
+            .reader(accountStatusReader.accountsReader(null))
             .writer(accountStatusWriter.changeAccounts())
             .faultTolerant()
-            .skip(NotFoundAccountException.class)
-            .retryLimit(3)
             .retry(ConnectTimeoutException.class)
             .retry(DeadlockLoserDataAccessException.class)
+            .noRetry(SQLException.class)
+            .retryLimit(2)
             .listener(loggingListener)
+            .listener(statusChangeListener)
+            .listener(statusChangeSkipListener)
             .build();
     }
 }

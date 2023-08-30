@@ -1,13 +1,17 @@
 package store.cookshoong.www.cookshoongspringbatch.rank.job;
 
+import java.sql.SQLException;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.listener.ExecutionContextPromotionListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.DeadlockLoserDataAccessException;
 import store.cookshoong.www.cookshoongspringbatch.logging.LoggingListener;
+import store.cookshoong.www.cookshoongspringbatch.logging.rank.AccountRankListener;
 import store.cookshoong.www.cookshoongspringbatch.rank.dto.RankDto;
 import store.cookshoong.www.cookshoongspringbatch.rank.reader.RanksReader;
 import store.cookshoong.www.cookshoongspringbatch.rank.writer.RanksWriter;
@@ -26,6 +30,7 @@ public class RankStepConfig {
     private final LoggingListener loggingListener;
     private final RanksReader ranksReader;
     private final RanksWriter ranksWriter;
+    private final AccountRankListener accountRankListener;
 
     /**
      * 등급에 대한 리스트 가져오는 Step.
@@ -40,8 +45,15 @@ public class RankStepConfig {
             .<RankDto, RankDto>chunk(CHUNK_SIZE)
             .reader(ranksReader.getRankCodes())
             .writer(ranksWriter)
+            .faultTolerant()
+            .retry(ConnectTimeoutException.class)
+            .retry(DeadlockLoserDataAccessException.class)
+            .noRetry(SQLException.class)
+            .noSkip(SQLException.class)
+            .retryLimit(3)
             .listener(promotionListener())
             .listener(loggingListener)
+            .listener(accountRankListener)
             .build();
     }
 

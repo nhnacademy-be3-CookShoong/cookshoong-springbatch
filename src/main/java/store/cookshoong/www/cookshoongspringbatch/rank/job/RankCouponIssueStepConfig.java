@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DeadlockLoserDataAccessException;
 import store.cookshoong.www.cookshoongspringbatch.logging.LoggingListener;
+import store.cookshoong.www.cookshoongspringbatch.logging.rank.CustomChunkListener;
+import store.cookshoong.www.cookshoongspringbatch.logging.rank.RankIssueListener;
 import store.cookshoong.www.cookshoongspringbatch.rank.dto.InsertRankCouponDto;
 import store.cookshoong.www.cookshoongspringbatch.rank.dto.SelectAccountRankCouponDto;
 import store.cookshoong.www.cookshoongspringbatch.rank.processor.RankCouponProcessor;
@@ -27,12 +29,14 @@ import store.cookshoong.www.cookshoongspringbatch.rank.writer.RankCouponWriter;
 @Configuration
 @RequiredArgsConstructor
 public class RankCouponIssueStepConfig {
-    private static final Integer CHUNK_SIZE = 10;
+    private static final Integer CHUNK_SIZE = 10000;
     private final StepBuilderFactory stepBuilderFactory;
     private final LoggingListener loggingListener;
     private final RankCouponReader rankCouponReader;
     private final RankCouponProcessor rankCouponProcessor;
     private final RankCouponWriter rankCouponWriter;
+    private final RankIssueListener rankIssueListener;
+    private final CustomChunkListener customChunkListener;
 
     /**
      * Change rank step step.
@@ -49,11 +53,14 @@ public class RankCouponIssueStepConfig {
             .processor(rankCouponProcessor)
             .writer(rankCouponWriter.insertRankCouponWriter())
             .listener(loggingListener)
+            .listener(customChunkListener)
+            .listener(rankIssueListener)
             .faultTolerant()
             .retry(ConnectTimeoutException.class)
             .retry(DeadlockLoserDataAccessException.class)
-            .noRetry(SQLException.class)
             .retryLimit(3)
+            .skip(SQLException.class)
+            .skipLimit(0)
             .build();
     }
 }
