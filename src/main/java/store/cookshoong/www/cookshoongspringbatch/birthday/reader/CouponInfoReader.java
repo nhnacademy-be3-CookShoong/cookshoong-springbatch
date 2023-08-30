@@ -10,8 +10,8 @@ import org.mybatis.spring.batch.builder.MyBatisCursorItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import store.cookshoong.www.cookshoongspringbatch.birthday.BirthdayProperties;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInfoDto;
+import store.cookshoong.www.cookshoongspringbatch.common.CommonProperties;
 
 /**
  * 생일 쿠폰 정책에 대한 정보 가져오는 Reader.
@@ -23,7 +23,7 @@ import store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInf
 @Configuration
 @RequiredArgsConstructor
 public class CouponInfoReader {
-    private final BirthdayProperties birthdayProperties;
+    private final CommonProperties commonProperties;
 
     private final SqlSessionFactory sqlSessionFactory;
 
@@ -34,9 +34,9 @@ public class CouponInfoReader {
      */
     @Bean
     public MyBatisCursorItemReader<BirthdayCouponInfoDto> getBirthCouponInfo() {
-        log.warn("========get Birthday Coupon Info=========");
+        log.info("========get Birthday Coupon Info=========");
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("birthCouponCode", birthdayProperties.getBirthdayPolicy());
+        parameters.put("birthCouponCode", commonProperties.getBirthdayPolicy());
         return new MyBatisCursorItemReaderBuilder<BirthdayCouponInfoDto>()
             .sqlSessionFactory(sqlSessionFactory)
             .queryId("store.cookshoong.www.cookshoongspringbatch.birthday.mapper.BirthdayMapper.selectBirthdayCouponInfo")
