@@ -1,0 +1,112 @@
+<configuration scan="true" scanPeriod="60 seconds">
+
+    <!-- Spring Profile 설정 -->
+    <springProfile name="dev">
+        <property name="LOGS_PATH" value="./logs" />
+    </springProfile>
+    <springProfile name="real">
+        <property name="LOGS_PATH" value="~/logs" />
+    </springProfile>
+    <property name="log.file.path" value="${LOGS_PATH}" />
+
+    <!-- 파일 출력 설정 -->
+    <appender name="FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.file.path}/server.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.file.path}/server-%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %clr(%-5level) %cyan(%logger) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- store.cookshoong.www.cookshoongspringbatch.status 패키지의 로그를 위한 Appender 설정 -->
+    <appender name="STATUS_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.file.path}/status/status_%d{yyyyMMdd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <charset>UTF-8</charset>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>[ %d{yyyy-MM-dd HH:mm:ss.SSS} ] [ %msg ] %n</Pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!-- store.cookshoong.www.cookshoongspringbatch.birthday 패키지의 로그를 위한 Appender 설정 -->
+    <appender name="BIRTHDAY_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.file.path}/birthday/birthday_%d{yyyyMMdd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <charset>UTF-8</charset>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>[ %d{yyyy-MM-dd HH:mm:ss.SSS} ] [ %msg ] %n</Pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!-- store.cookshoong.www.cookshoongspringbatch.rank 패키지의 로그를 위한 Appender 설정 -->
+    <appender name="RANK_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.file.path}/rank/rank_%d{yyyyMMdd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <charset>UTF-8</charset>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>[ %d{yyyy-MM-dd HH:mm:ss.SSS} ] [ %msg ] %n</Pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!-- 루트 로거 설정 (파일 출력) -->
+    <root level="INFO">
+        <appender-ref ref="FileAppender"/>
+    </root>
+
+    <!-- 루트 로거 설정 (콘솔 출력) -->
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- 상태 변경 패키지의 로그를 위한 Logger 설정 -->
+    <logger name="store.cookshoong.www.cookshoongspringbatch.status" level="ERROR">
+        <appender-ref ref="STATUS_ERROR"/>
+    </logger>
+
+    <!-- 생일쿠폰 발급 패키지의 로그를 위한 Logger 설정 -->
+    <logger name="store.cookshoong.www.cookshoongspringbatch.birthday" level="ERROR">
+        <appender-ref ref="BIRTHDAY_ERROR"/>
+    </logger>
+
+    <!-- 등급 변경 및 쿠폰 발급 패키지의 로그를 위한 Logger 설정 -->
+    <logger name="store.cookshoong.www.cookshoongspringbatch.rank" level="ERROR">
+        <appender-ref ref="RANK_ERROR"/>
+    </logger>
+
+</configuration>
