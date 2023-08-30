@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.batch.MyBatisPagingItemReader;
 import org.mybatis.spring.batch.builder.MyBatisPagingItemReaderBuilder;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.SelectAccountDto;
@@ -33,12 +34,13 @@ public class BirthdayAccountReader {
      */
     @Bean
     @StepScope
-    public MyBatisPagingItemReader<SelectAccountDto> birthdayAccountRead() {
-        int nowMonth = LocalDate.now().getMonthValue();
+    public MyBatisPagingItemReader<SelectAccountDto> birthdayAccountRead(
+        @Value("#{jobParameters['nowMonth']}") String nowMonth
+    ) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("nowMonth", nowMonth);
 
-        log.warn("===========BirthdayCoupon Issue Step Reader Start ===========");
+        log.info("===========BirthdayCoupon Issue Step Reader Start ===========");
         return new MyBatisPagingItemReaderBuilder<SelectAccountDto>()
             .sqlSessionFactory(sqlSessionFactory)
             .queryId("store.cookshoong.www.cookshoongspringbatch.birthday.mapper.BirthdayMapper.selectAccountsByMonth")
