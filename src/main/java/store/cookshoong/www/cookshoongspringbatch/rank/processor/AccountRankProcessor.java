@@ -33,19 +33,14 @@ public class AccountRankProcessor implements ItemProcessor<SelectAccountOrderDto
         int lastIndexNum = rankCodes.size() - 1;
         int[] rankStandardNum = {2, 5, 10};
         String rankCode = rankCodes.get(lastIndexNum).getRankCode(); // 가장 높은 값을 기본으로
-        Long policyId = rankCodes.get(lastIndexNum).getCouponPolicyId();
-        int usagePeriodNum = rankCodes.get(lastIndexNum).getUsagePeriod();
 
         for (int i = 0; i < rankStandardNum.length; i++) {
             if (orderCnt < rankStandardNum[i]) {
                 rankCode = rankCodes.get(i).getRankCode();
-                policyId = rankCodes.get(i).getCouponPolicyId();
-                usagePeriodNum = rankCodes.get(i).getUsagePeriod();
                 break;
             }
         }
-        updateAccountRankDto.modify(selectAccountOrderDto.getAccountId(), rankCode, policyId,
-            LocalDate.now(), LocalDate.now().plusDays(usagePeriodNum));
+        updateAccountRankDto.modify(selectAccountOrderDto.getAccountId(), rankCode);
         log.info("AccountId : {}, RankCode : {}", updateAccountRankDto.getAccountId(), updateAccountRankDto.getRankCode());
         return updateAccountRankDto;
     }

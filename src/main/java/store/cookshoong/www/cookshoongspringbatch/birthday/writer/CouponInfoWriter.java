@@ -25,7 +25,6 @@ import store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInf
 @RequiredArgsConstructor
 @StepScope
 public class CouponInfoWriter implements ItemWriter<BirthdayCouponInfoDto> {
-    //private final DataShareBean<BirthdayCouponInfoDto> dataShareBean;
     private StepExecution stepExecution;
 
     private static final Logger logger = LoggerFactory.getLogger(CouponInfoWriter.class);
@@ -35,9 +34,6 @@ public class CouponInfoWriter implements ItemWriter<BirthdayCouponInfoDto> {
         logger.info("BirthdayCoupon info 시작");
         ExecutionContext executionContext = this.stepExecution.getExecutionContext();
         executionContext.put("birthdayCoupon", list.get(0));
-        //BirthdayCouponInfoDto birthdayCouponInfoDto = list.get(0);
-        //logger.info("BirthdayCoupon info 정보 : {}", birthdayCouponInfoDto);
-        //dataShareBean.putData("BIRTHDAY_COUPON", birthdayCouponInfoDto);
     }
 
     @BeforeStep

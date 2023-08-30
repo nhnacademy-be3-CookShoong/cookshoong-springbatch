@@ -26,7 +26,7 @@ public class BirthdayAccountWriter {
      * @return the my batis batch item writer
      */
     public MyBatisBatchItemWriter<InsertIssueCouponDto> insertIssueBirthDayCoupon() {
-        log.warn("=========Insert into Issue Coupon DB =========");
+        log.info("=========Insert into Issue Coupon DB =========");
         return new MyBatisBatchItemWriterBuilder<InsertIssueCouponDto>()
             .sqlSessionFactory(sqlSessionFactory)
             .statementId("store.cookshoong.www.cookshoongspringbatch.birthday.mapper.BirthdayMapper.insertBirthdayCoupon")
