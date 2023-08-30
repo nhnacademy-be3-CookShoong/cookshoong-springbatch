@@ -1,4 +1,4 @@
-package store.cookshoong.www.cookshoongspringbatch.logging;
+package store.cookshoong.www.cookshoongspringbatch.logging.birthday;
 
 import com.opencsv.CSVWriter;
 import java.io.FileWriter;
@@ -51,7 +51,7 @@ public class BirthdayCouponListener {
      * @param item the item
      */
     @OnProcessError
-    public void onProcessError(Exception e, SelectAccountDto item) {
+    public void onProcessError(SelectAccountDto item, Exception e) {
         log.error("[BirthdayIssueCoupon] Processor : birthdayIssueCouponProcessor Error At : {}, Error : {}", item.getAccountId(), e.getMessage());
         try {
             String filePath = commonProperties.getBirthdayCouponFile();

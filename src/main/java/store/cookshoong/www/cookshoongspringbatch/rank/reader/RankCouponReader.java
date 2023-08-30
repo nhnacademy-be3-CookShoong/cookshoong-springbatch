@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import store.cookshoong.www.cookshoongspringbatch.rank.dto.SelectAccountRankCouponDto;
 
 /**
- * {설명을 작성해주세요}.
+ * 등급 쿠폰 발급을 위한 회원-회원등급 읽기.
  *
  * @author seungyeon
  * @since 2023.08.30
@@ -22,7 +22,7 @@ import store.cookshoong.www.cookshoongspringbatch.rank.dto.SelectAccountRankCoup
 @Configuration
 @RequiredArgsConstructor
 public class RankCouponReader {
-    private static final Integer PAGE_SIZE = 10;
+    private static final Integer PAGE_SIZE = 10000;
     private final SqlSessionFactory sqlSessionFactory;
 
     /**
@@ -33,7 +33,7 @@ public class RankCouponReader {
     @Bean
     @StepScope
     public MyBatisPagingItemReader<SelectAccountRankCouponDto> rankCouponRead() {
-        log.error("============RankCoupon Step Reader Start===============");
+        log.info("============RankCoupon Step Reader Start===============");
         return new MyBatisPagingItemReaderBuilder<SelectAccountRankCouponDto>()
             .sqlSessionFactory(sqlSessionFactory)
             .queryId("store.cookshoong.www.cookshoongspringbatch.rank.mapper.RankMapper.selectAccountRankCoupon")

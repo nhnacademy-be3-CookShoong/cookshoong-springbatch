@@ -10,6 +10,7 @@
         from accounts as a
         where a.status_code = 'ACTIVE'
           and a.last_login_at <![CDATA[<=]]> #{conversionBasedDate}
+        order by a.account_id asc
         LIMIT #{_skiprows}, #{_pagesize}
     </select>
 

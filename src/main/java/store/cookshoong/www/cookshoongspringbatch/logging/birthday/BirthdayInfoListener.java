@@ -1,4 +1,4 @@
-package store.cookshoong.www.cookshoongspringbatch.logging;
+package store.cookshoong.www.cookshoongspringbatch.logging.birthday;
 
 import com.opencsv.CSVWriter;
 import java.io.FileWriter;
@@ -11,7 +11,6 @@ import org.springframework.batch.core.annotation.OnWriteError;
 import org.springframework.stereotype.Component;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInfoDto;
 import store.cookshoong.www.cookshoongspringbatch.common.CommonProperties;
-import store.cookshoong.www.cookshoongspringbatch.status.dto.AccountStatusDto;
 
 /**
  * 생일쿠폰 정보 Error Listener.

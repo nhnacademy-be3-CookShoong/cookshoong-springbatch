@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.batch.MyBatisBatchItemWriter;
-import org.mybatis.spring.batch.builder.MyBatisBatchItemWriterBuilder;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +25,7 @@ import store.cookshoong.www.cookshoongspringbatch.rank.mapper.RankMapper;
 @RequiredArgsConstructor
 public class RankCouponWriter {
     private final SqlSessionFactory sqlSessionFactory;
-    private static final int CHUNK_SIZE = 10;
+    private static final int CHUNK_SIZE = 10000;
 
     /**
      * Insert rank coupon writer item writer.
@@ -37,8 +35,9 @@ public class RankCouponWriter {
     @StepScope
     @Bean
     public ItemWriter<InsertRankCouponDto> insertRankCouponWriter() {
+
         return items -> {
-            log.error("=============== Bulk Insert Rank Coupon Start! =================");
+            log.info("=============== Bulk Insert Rank Coupon Start! =================");
             List<InsertRankCouponDto> insertItems = new ArrayList<>();
 
             for (InsertRankCouponDto item : items) {
@@ -54,14 +53,21 @@ public class RankCouponWriter {
             if (!insertItems.isEmpty()) {
                 performBulkInsert(insertItems);
             }
-            log.error("=============== Bulk Insert Rank Coupon Finished! =================");
+
+            log.info("=============== Bulk Insert Rank Coupon Finished! =================");
         };
     }
 
     private void performBulkInsert(List<InsertRankCouponDto> batchItems) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
             RankMapper rankMapper = sqlSession.getMapper(RankMapper.class);
+            rankMapper.disableConstraints();
+            long start = System.currentTimeMillis();
+            log.error("== 10000 Bulk insert Start == : {}", start);
             rankMapper.insertRankCoupon(batchItems);
+            long end = System.currentTimeMillis() - start;
+            log.error("== 10000 Bulk insert Total == : {} ms", end);
+            rankMapper.enableConstraints();
             sqlSession.commit();
         }
     }

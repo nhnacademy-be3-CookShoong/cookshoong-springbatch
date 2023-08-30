@@ -1,4 +1,4 @@
-package store.cookshoong.www.cookshoongspringbatch.logging;
+package store.cookshoong.www.cookshoongspringbatch.logging.status;
 
 import com.opencsv.CSVWriter;
 import java.io.FileWriter;

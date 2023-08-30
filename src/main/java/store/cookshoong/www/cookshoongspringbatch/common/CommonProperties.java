@@ -19,4 +19,7 @@ public class CommonProperties {
     private String statusFile;
     private String birthdayInfoFile;
     private String birthdayCouponFile;
+    private String rankInfoFile;
+    private String accountRankFile;
+    private String rankIssueFile;
 }
