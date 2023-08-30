@@ -10,7 +10,15 @@
             from accounts as a left join orders o on a.account_id = o.account_id and o.ordered_at BETWEEN #{startDate} AND #{endDate}
             where a.status_code != 'WITHDRAWAL'
         group by a.account_id
-            LIMIT #{_skiprows}, #{_pagesize}
+        order by a.account_id asc
+    </select>
+    <select id="selectAccountRankCoupon" resultType="store.cookshoong.www.cookshoongspringbatch.rank.dto.SelectAccountRankCouponDto">
+        select a.account_id as 'accountId',
+               a.rank_code as 'rankCode'
+        from accounts as a
+        where a.status_code != 'WITHDRAWAL'
+        order by a.account_id asc
+        LIMIT #{_skiprows}, #{_pagesize}
     </select>
     <select id="selectRankCodes" resultType="store.cookshoong.www.cookshoongspringbatch.rank.dto.RankDto">
         select r.rank_code as 'rankCode',
@@ -25,8 +33,20 @@
         update accounts
         set rank_code = #{rankCode} where accounts.account_id = #{accountId}
     </update>
-    <insert id="insertRankCoupon" parameterType="store.cookshoong.www.cookshoongspringbatch.rank.dto.UpdateAccountRankDto">
+
+    <update id="disableConstraints">
+        SET unique_checks=0;
+        SET foreign_key_checks=0;
+    </update>
+    <insert id="insertRankCoupon" parameterType="java.util.List">
         insert into issue_coupons (issue_coupon_code, account_id, coupon_policy_id, receipt_date, expiration_date)
-        VALUES (UUID_TO_BIN(UUID()), #{accountId}, #{couponPolicyId}, #{receiptDate}, #{expirationDate})
+        VALUES
+        <foreach collection="list" item="dto" separator=",">
+            (UUID_TO_BIN(UUID()), #{dto.accountId}, #{dto.couponPolicyId}, #{dto.startDate}, #{dto.endDate})
+        </foreach>
     </insert>
+    <update id="enableConstraints">
+        SET unique_checks=1;
+        SET foreign_key_checks=1;
+    </update>
 </mapper>

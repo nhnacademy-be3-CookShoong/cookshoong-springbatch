@@ -13,6 +13,7 @@
         select a.account_id as 'accountId'
         from accounts as a
         where MONTH(birthday) = #{nowMonth}
+        order by a.account_id asc
         LIMIT #{_skiprows}, #{_pagesize}
     </select>
     <select id="selectBirthdayCouponInfo"
