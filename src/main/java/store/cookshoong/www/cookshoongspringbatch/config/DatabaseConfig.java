@@ -29,7 +29,7 @@ public class DatabaseConfig {
     public DataSource dataSourceBack(DatabaseProperties databaseProperties) {
         return DataSourceBuilder.create()
             .driverClassName(databaseProperties.getDriverClassName())
-            .url(databaseProperties.getUrl())
+            .url(String.format("%s&allowMultiQueries=true", databaseProperties.getUrl()))
             .username(databaseProperties.getUsername())
             .password(databaseProperties.getPassword())
             .type(BasicDataSource.class)
