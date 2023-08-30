@@ -1,10 +1,9 @@
 package store.cookshoong.www.cookshoongspringbatch.rank.dto;
 
-import java.time.LocalDate;
 import lombok.Getter;
 
 /**
- * {설명을 작성해주세요}.
+ * 회원 등급 쿠폰 발급을 위해 등급 정보 가져오는 dto.
  *
  * @author seungyeon
  * @since 2023.08.30
@@ -12,6 +11,5 @@ import lombok.Getter;
 @Getter
 public class SelectAccountRankCouponDto {
     private Long accountId;
-    private Long couponPolicyId;
-    private Integer usagePeriod;
+    private String rankCode;
 }
