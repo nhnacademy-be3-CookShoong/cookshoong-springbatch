@@ -15,14 +15,15 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class LoggingListener {
+
     /**
      * Step 실행전 확인
      *
      * @param execution the execution
      */
     @BeforeStep
-    public void beforeStep(StepExecution execution){
-        log.info("start : {}", execution.getStepName());
+    public void beforeStep(StepExecution execution) {
+        log.info("Start Step : {}", execution.getStepName());
     }
 
     /**
@@ -32,7 +33,6 @@ public class LoggingListener {
      */
     @AfterStep
     public void afterStep(StepExecution execution) {
-        log.info("end : {}", execution.getStepName());
-
+        log.info("End Step: {}", execution.getStepName());
     }
 }
