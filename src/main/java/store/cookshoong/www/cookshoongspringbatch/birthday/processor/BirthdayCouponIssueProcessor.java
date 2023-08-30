@@ -30,16 +30,7 @@ import store.cookshoong.www.cookshoongspringbatch.rank.dto.RankDto;
 public class BirthdayCouponIssueProcessor implements ItemProcessor<SelectAccountDto, InsertIssueCouponDto> {
     private BirthdayCouponInfoDto birthdayCoupon;
     private static Logger logger = LoggerFactory.getLogger(BirthdayCouponIssueProcessor.class);
-//    private DataShareBean<BirthdayCouponInfoDto> dataShareBean;
 
-//    /**
-//     * Instantiates a new Birthday coupon issue processor.
-//     *
-//     * @param dataShareBean the data share bean
-//     */
-//    public BirthdayCouponIssueProcessor(DataShareBean<BirthdayCouponInfoDto> dataShareBean) {
-//        this.dataShareBean = dataShareBean;
-//    }
 
     @Override
     public InsertIssueCouponDto process(SelectAccountDto selectAccountDto) throws Exception {
@@ -49,16 +40,6 @@ public class BirthdayCouponIssueProcessor implements ItemProcessor<SelectAccount
         LocalDate lastDate = LocalDate.now().plusDays(usagePeriod);
         return new InsertIssueCouponDto(selectAccountDto.getAccountId(), couponPolicyId, LocalDate.now(), lastDate);
     }
-
-//    /**
-//     * Retrieve inter step data.
-//     *
-//     * @param stepExecution the step execution
-//     */
-//    @BeforeStep
-//    public void retrieveInterStepData(StepExecution stepExecution) {
-//        this.birthdayCoupon = dataShareBean.getData("BIRTHDAY_COUPON");
-//    }
 
     @BeforeStep
     public void reGet(StepExecution stepExecution) {
