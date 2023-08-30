@@ -12,6 +12,8 @@ import org.springframework.dao.DeadlockLoserDataAccessException;
 import store.cookshoong.www.cookshoongspringbatch.birthday.dto.BirthdayCouponInfoDto;
 import store.cookshoong.www.cookshoongspringbatch.birthday.reader.CouponInfoReader;
 import store.cookshoong.www.cookshoongspringbatch.birthday.writer.CouponInfoWriter;
+import store.cookshoong.www.cookshoongspringbatch.logging.birthday.BirthdayInfoListener;
+import store.cookshoong.www.cookshoongspringbatch.logging.birthday.BirthdayInfoSkipListener;
 import store.cookshoong.www.cookshoongspringbatch.logging.LoggingListener;
 
 /**
@@ -27,6 +29,8 @@ public class BirthdayCouponInfoStepConfig {
     private final LoggingListener loggingListener;
     private final CouponInfoReader couponInfoReader;
     private final CouponInfoWriter couponInfoWriter;
+    private final BirthdayInfoSkipListener birthdayInfoSkipListener;
+    private final BirthdayInfoListener birthdayInfoListener;
 
     /**
      * 생일 쿠폰에 대한 정책은 static 변수로 지정하고 1개만 가져와서 사용하고 있다.
@@ -46,6 +50,8 @@ public class BirthdayCouponInfoStepConfig {
             .retry(DeadlockLoserDataAccessException.class)
             .listener(promotionListener_birthday())
             .listener(loggingListener)
+            .listener(birthdayInfoListener)
+            .listener(birthdayInfoSkipListener)
             .build();
     }
 

@@ -14,8 +14,9 @@ import store.cookshoong.www.cookshoongspringbatch.birthday.dto.SelectAccountDto;
 import store.cookshoong.www.cookshoongspringbatch.birthday.processor.BirthdayCouponIssueProcessor;
 import store.cookshoong.www.cookshoongspringbatch.birthday.reader.BirthdayAccountReader;
 import store.cookshoong.www.cookshoongspringbatch.birthday.writer.BirthdayAccountWriter;
+import store.cookshoong.www.cookshoongspringbatch.logging.birthday.BirthdayCouponListener;
+import store.cookshoong.www.cookshoongspringbatch.logging.birthday.BirthdayCouponSkipListener;
 import store.cookshoong.www.cookshoongspringbatch.logging.LoggingListener;
-import store.cookshoong.www.cookshoongspringbatch.status.exception.NotFoundAccountException;
 
 /**
  * 생일쿠폰 발급 Step.
@@ -33,6 +34,9 @@ public class BirthdayCouponStepConfig {
     private final BirthdayAccountWriter accountWriter;
     private final BirthdayCouponIssueProcessor birthdayCouponIssueProcessor;
     private final LoggingListener loggingListener;
+    private final BirthdayCouponListener birthdayCouponListener;
+    private final BirthdayCouponSkipListener birthdayCouponSkipListener;
+
 
     /**
      * 생일 쿠폰 발급 Step.
@@ -42,18 +46,20 @@ public class BirthdayCouponStepConfig {
     @Bean
     @JobScope
     public Step issueBirthdayCouponStep() {
+        log.info("============BirthdayCoupon Issue Step Start===============");
         return stepBuilderFactory.get("생일쿠폰 발급")
             .allowStartIfComplete(true)
             .<SelectAccountDto, InsertIssueCouponDto>chunk(CHUNK_SIZE)
-            .reader(accountReader.birthdayAccountRead())
+            .reader(accountReader.birthdayAccountRead(null))
             .processor(birthdayCouponIssueProcessor)
             .writer(accountWriter.insertIssueBirthDayCoupon())
             .faultTolerant()
-            .skip(NotFoundAccountException.class)
             .retryLimit(3)
             .retry(ConnectTimeoutException.class)
             .retry(DeadlockLoserDataAccessException.class)
             .listener(loggingListener)
+            .listener(birthdayCouponListener)
+            .listener(birthdayCouponSkipListener)
             .build();
     }
 
