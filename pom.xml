@@ -26,6 +26,17 @@
         <sonar.language>java</sonar.language>
         <spring-cloud.version>2021.0.8</spring-cloud.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>release</id>
+            <url>https://github.com/edu-springboot/edu-springboot-maven-repo/raw/master/releases</url>
+        </repository>
+
+        <repository>
+            <id>snapshot</id>
+            <url>https://github.com/edu-springboot/edu-springboot-maven-repo/raw/master/snapshots</url>
+        </repository>
+    </repositories>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -109,6 +120,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.nhn.dooray.messenger</groupId>
+            <artifactId>dooray-hook-sender</artifactId>
+            <version>1.2.0-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.5.2</version>
         </dependency>
     </dependencies>
 
