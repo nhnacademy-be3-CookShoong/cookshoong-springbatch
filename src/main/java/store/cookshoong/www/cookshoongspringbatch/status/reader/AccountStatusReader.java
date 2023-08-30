@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.batch.MyBatisPagingItemReader;
 import org.mybatis.spring.batch.builder.MyBatisPagingItemReaderBuilder;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import store.cookshoong.www.cookshoongspringbatch.status.dto.AccountStatusDto;
@@ -33,12 +34,12 @@ public class AccountStatusReader {
      */
     @Bean
     @StepScope
-    public MyBatisPagingItemReader<AccountStatusDto> accountsReader() {
-        LocalDateTime conversionBasedDate = LocalDateTime.now().minusDays(90);
-
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("conversionBasedDate", conversionBasedDate);
-        log.warn("===========Stauts Step reader Start!=========");
+    public MyBatisPagingItemReader<AccountStatusDto> accountsReader(
+        @Value("#{jobParameters['ninetyDaysAgoLogin']}") String ninetyDaysAgoLogin
+    ) {
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("conversionBasedDate", ninetyDaysAgoLogin);
+        log.info("===========Status Step reader Start!=========");
         return new MyBatisPagingItemReaderBuilder<AccountStatusDto>()
             .sqlSessionFactory(sqlSessionFactory)
             .queryId("store.cookshoong.www.cookshoongspringbatch.status.mapper.StatusMapper.getAccounts")
